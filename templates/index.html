@@ -1,32 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flask App</title>
+    <meta charset="utf-8">
+    <title>URL Shortener</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { margin-bottom: 20px; }
-        input { padding: 5px; }
-        button { padding: 5px 10px; }
-        table { border-collapse: collapse; width: 300px; }
-        th, td { border: 1px solid black; padding: 5px; text-align: center; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #f1f8e9, #fff9c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input {
+            padding: 12px;
+            width: 70%;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 18px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #388e3c;
+        }
+
+        /* Background floating icons */
+        .icon {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.2;
+            animation: floatIcons linear infinite;
+        }
+
+        @keyframes floatIcons {
+            from {
+                transform: translateY(110vh) rotate(0deg);
+            }
+            to {
+                transform: translateY(-120vh) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Simple Flask App</h1>
-    <form method="POST">
-        <input type="text" name="name" placeholder="Enter your name" required>
-        <button type="submit">Submit</button>
-    </form>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Shorten Your URL</h1>
+        <form action="/" method="post">
+            <input type="text" name="long_url" placeholder="Enter your long URL" required>
+            <button type="submit">Shorten</button>
+        </form>
 
-    <h2>Submitted Names</h2>
-    <table>
-        <tr><th>ID</th><th>Name</th></tr>
-        {% for row in data %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        {% if short_url %}
+        <p>Your Short URL:</p>
+        <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+        {% endif %}
+    </div>
+
+    <script>
+        const icons = ["🔗", "🌐", "🖥", "📎", "✂"];
+        
+        function createIcon() {
+            const icon = document.createElement("div");
+            icon.classList.add("icon");
+            icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+            
+            // Random position & speed
+            icon.style.left = Math.random() * 100 + "vw";
+            const duration = 10 + Math.random() * 15; // 10–25s
+            icon.style.animationDuration = duration + "s";
+            icon.style.fontSize = (30 + Math.random() * 30) + "px"; // 30–60px
+            icon.style.opacity = 0.1 + Math.random() * 0.2; // 0.1–0.3
+            
+            document.body.appendChild(icon);
+
+            // Remove icon after animation
+            setTimeout(() => {
+                icon.remove();
+            }, duration * 1000);
+        }
+
+        // Create new icons continuously
+        setInterval(createIcon, 1000);
+        // Initial icons
+        for (let i = 0; i < 10; i++) {
+            createIcon();
+        }
+    </script>
 </body>
 </html>
